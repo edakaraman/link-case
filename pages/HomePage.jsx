@@ -1,11 +1,11 @@
 "use client"
 import React from 'react'
-import MyForm from '../components/MyForm'
+import FormModal from '@/components/FormModal'
 
 export default function HomePage() {
   return (
     <div>
-        <MyForm/>
+      <FormModal />
     </div>
   )
 }

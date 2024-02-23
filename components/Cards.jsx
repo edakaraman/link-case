@@ -7,7 +7,7 @@ import EditModal from './EditModal';
 import PaginatorDatas from './PaginatorDatas';
 
 export default function Cards() {
-    const { links, setLinks,first,rows } = useLink();
+    const { links, setLinks, first, rows,setEditModalVisible,setVisible } = useLink();
     const toast = useRef(null);
 
     const [hoveredIndex, setHoveredIndex] = useState(null); //kartın üzerine gelindiğinde
@@ -16,24 +16,31 @@ export default function Cards() {
     const [editingIndex, setEditingIndex] = useState(null);
     const [sortOrder, setSortOrder] = useState('asc');
 
+    const [readOnly,setReadOnly] = useState(false); // detay görüntüleme için
+
     const sortOptions = [
-        { value: 'asc', label: 'Most Voted (Z -> A)' },
-        { value: 'desc', label: 'Less Voted ( A -> Z)' }
+        { value: 'most-voted', label: 'Most Voted (10 -> 0 )' },
+        { value: 'less-voted', label: 'Less Voted (0 -> 10 )' },
+        { value: 'ascending', label: 'A->Z' },
+        { value: 'descending', label:' Z->A' },
     ];
 
     const sortLinksByVote = (order) => {
         const sortedLinks = [...links];
         sortedLinks.sort((a, b) => {
-            if (order === 'asc') {
+            if (order === 'most-voted') {
                 return b.vote - a.vote;
-            } else {
+            } else if( order === 'less-voted') {
                 return a.vote - b.vote;
+            } else if (order === 'ascending') {
+                return a.name.localeCompare(b.name, 'tr', { sensitivity: 'base' });
+            } else if (order === 'descending') {
+                return b.name.localeCompare(a.name, 'tr', { sensitivity: 'base' });
             }
         });
         setLinks(sortedLinks);
     };
 
-    // Seçenek değiştiğinde sıralama yap
     const handleSortChange = (event) => {
         const order = event.target.value;
         setSortOrder(order);
@@ -48,7 +55,7 @@ export default function Cards() {
         // Bağlantıları puan sırasına ve son oy kullanma zamanına göre sırala
         updatedLinks.sort((a, b) => {
             if (a.vote === b.vote) {
-                // Aynı puan durumunda, daha son oy kullanılanı üstte göster
+                // Aynı puan durumunda, son oy kullanılanı üstte göster
                 return new Date(b.lastVotedAt) - new Date(a.lastVotedAt);
             } else {
                 return b.vote - a.vote;
@@ -65,7 +72,7 @@ export default function Cards() {
         // Bağlantıları puan sırasına ve son oy kullanma zamanına göre sırala
         updatedLinks.sort((a, b) => {
             if (a.vote === b.vote) {
-                // Aynı puan durumunda, daha son oy kullanılanı üstte göster
+                // Aynı puan durumunda, son oy kullanılanı üstte göster
                 return new Date(b.lastVotedAt) - new Date(a.lastVotedAt);
             } else {
                 return b.vote - a.vote;
@@ -102,7 +109,7 @@ export default function Cards() {
             setEditingIndex(null);
         }
     };
-    
+
     const confirmDialogFooter = (
         <div>
             <Button label="CANCEL" icon="pi pi-times" className="p-button-text" onClick={() => setShowConfirm(false)} />
@@ -115,21 +122,20 @@ export default function Cards() {
             {
                 links.length > 0 && (
                     <div>
-                    <label htmlFor="sort">Sıralama: </label>
-                    <select id="sort" value={sortOrder} onChange={handleSortChange} className='p-1'>
-                        {sortOptions.map(option => (
-                            <option key={option.value} value={option.value}>{option.label}</option>
-                        ))}
-                    </select>
-                </div>
+                        <label htmlFor="sort">Sıralama: </label>
+                        <select id="sort" value={sortOrder} onChange={handleSortChange} className='p-1'>
+                            {sortOptions.map(option => (
+                                <option key={option.value} value={option.value}>{option.label}</option>
+                            ))}
+                        </select>
+                    </div>
                 )
             }
-           
             {links.slice(first, first + rows).map((linkItem, index) => (
-                <div key={index} className='flex gap-3' onMouseEnter={() => setHoveredIndex(index)} onMouseLeave={() => setHoveredIndex(null)}>
+                <div key={index} className='flex gap-3 cursor-pointer min-w-max' onMouseEnter={() => setHoveredIndex(index)} onMouseLeave={() => setHoveredIndex(null)}>
                     <div className='bg-gray-200 w-5rem h-8rem p-2'>
                         <h2>{linkItem.vote}</h2>
-                        <p className='text-gray-900'>POINTS</p>
+                        <p className='text-gray-900'>VOTES</p>
                     </div>
                     <div>
                         {editingIndex === index ? (
@@ -138,6 +144,7 @@ export default function Cards() {
                                 initialUrl={linkItem.linkurl}
                                 onSave={(name, url) => handleSaveEdit(name, url)}
                                 onCancel={() => setEditingIndex(null)}
+                                readValue={readOnly}
                             />
                         ) : (
                             <div>
@@ -159,8 +166,11 @@ export default function Cards() {
                             <div className='cursor-pointer' onClick={() => { setLinkToRemove(index); setShowConfirm(true); }}>
                                 <i className="pi pi-trash"></i>
                             </div>
-                            <div className='cursor-pointer' onClick={() => setEditingIndex(index)}>
+                            <div className='cursor-pointer' onClick={() =>{ setEditingIndex(index); setEditModalVisible(true); setReadOnly(false);}}>
                                 <i className="pi pi-file-edit"></i>
+                            </div>
+                            <div className='eye cursor-pointer' onClick={() =>{ setEditingIndex(index); setEditModalVisible(true); setReadOnly(true);}}>
+                                <i className="pi pi-eye"></i>
                             </div>
                         </div>
                     )}
