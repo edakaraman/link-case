@@ -112,14 +112,19 @@ export default function Cards() {
 
     return (
         <div className='flex flex-column gap-3'>
-            <div>
-                <label htmlFor="sort">Sıralama: </label>
-                <select id="sort" value={sortOrder} onChange={handleSortChange} className='p-1'>
-                    {sortOptions.map(option => (
-                        <option key={option.value} value={option.value}>{option.label}</option>
-                    ))}
-                </select>
-            </div>
+            {
+                links.length > 0 && (
+                    <div>
+                    <label htmlFor="sort">Sıralama: </label>
+                    <select id="sort" value={sortOrder} onChange={handleSortChange} className='p-1'>
+                        {sortOptions.map(option => (
+                            <option key={option.value} value={option.value}>{option.label}</option>
+                        ))}
+                    </select>
+                </div>
+                )
+            }
+           
             {links.slice(first, first + rows).map((linkItem, index) => (
                 <div key={index} className='flex gap-3' onMouseEnter={() => setHoveredIndex(index)} onMouseLeave={() => setHoveredIndex(null)}>
                     <div className='bg-gray-200 w-5rem h-8rem p-2'>
