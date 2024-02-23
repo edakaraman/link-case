@@ -114,7 +114,7 @@ export default function Cards() {
         <div className='flex flex-column gap-3'>
             <div>
                 <label htmlFor="sort">Sıralama: </label>
-                <select id="sort" value={sortOrder} onChange={handleSortChange}>
+                <select id="sort" value={sortOrder} onChange={handleSortChange} className='p-1'>
                     {sortOptions.map(option => (
                         <option key={option.value} value={option.value}>{option.label}</option>
                     ))}

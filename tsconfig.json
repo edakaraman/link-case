@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/Cards.jsx", "components/EditModal.jsx", "components/MyForm.jsx", "components/PaginatorDatas.jsx", "pages/HomePage.jsx"],
   "exclude": ["node_modules"]
 }
