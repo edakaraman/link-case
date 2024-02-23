@@ -29,13 +29,9 @@ export default function EditModal({ initialName, initialUrl, onSave, onCancel, r
                 <InputText id='l-url' value={url} onChange={(e) => setUrl(e.target.value)} readOnly={readValue} />
                 {
                     !readValue && (
-                        <div className='flex gap-3'>
-                            <Button label="Save" severity='success' onClick={handleSave} />
-                            <Button label="Cancel" severity='danger' onClick={handleCancel} />
-                        </div>
+                        <Button label="Save" severity='success' onClick={handleSave} />
                     )
                 }
-
             </div>
         </Dialog>
     );
