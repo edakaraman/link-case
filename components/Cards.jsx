@@ -122,7 +122,7 @@ export default function Cards() {
             {
                 links.length > 0 && (
                     <div>
-                        <label htmlFor="sort">Sıralama: </label>
+                        <label htmlFor="sort">Sorting: </label>
                         <select id="sort" value={sortOrder} onChange={handleSortChange} className='p-1'>
                             {sortOptions.map(option => (
                                 <option key={option.value} value={option.value}>{option.label}</option>
