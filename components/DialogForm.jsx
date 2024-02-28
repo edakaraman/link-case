@@ -1,4 +1,4 @@
-import React,{useRef} from 'react'
+import React, { useRef } from 'react'
 import { Dialog } from 'primereact/dialog';
 import { useFormik } from 'formik';
 import { contactSchema } from '@/yup/YupValidation';
@@ -8,7 +8,7 @@ import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
 
 export default function DialogForm() {
-    const { links, setLinks, setIsModalOpen,visible,setVisible } = useLink();
+    const { links, setLinks, setIsModalOpen, visible, setVisible } = useLink();
     const toast = useRef(null);
 
     const formik = useFormik({

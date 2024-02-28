@@ -3,11 +3,12 @@ import { useLink } from '../src/context';
 import { ConfirmDialog } from 'primereact/confirmdialog';
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
+import { Dropdown } from 'primereact/dropdown';
 import EditModal from './EditModal';
 import PaginatorDatas from './PaginatorDatas';
 
 export default function Cards() {
-    const { links, setLinks, first, rows,setEditModalVisible,setVisible } = useLink();
+    const { links, setLinks, first, rows,setEditModalVisible } = useLink();
     const toast = useRef(null);
 
     const [hoveredIndex, setHoveredIndex] = useState(null); //kartın üzerine gelindiğinde
@@ -81,7 +82,7 @@ export default function Cards() {
         setLinks(updatedLinks);
     };
 
-    //SİLME İŞLEMİNE ONAY VERİLDİĞİNDE
+    //Silme işlemine onay verildiğinde
     const handleConfirm = () => {
         const updatedLinks = links.filter((link, index) => index !== linkToRemove);
         setLinks(updatedLinks);
@@ -122,12 +123,9 @@ export default function Cards() {
             {
                 links.length > 0 && (
                     <div>
-                        <label htmlFor="sort">Sorting: </label>
-                        <select id="sort" value={sortOrder} onChange={handleSortChange} className='p-1'>
-                            {sortOptions.map(option => (
-                                <option key={option.value} value={option.value}>{option.label}</option>
-                            ))}
-                        </select>
+                        <label htmlFor="sort"> Sorting: </label>
+                        <Dropdown id="sort" value={sortOrder} onChange={handleSortChange} options={sortOptions} optionLabel="label" 
+                         placeholder="Select a sorting method" className="w-full md:w-14rem" /> 
                     </div>
                 )
             }

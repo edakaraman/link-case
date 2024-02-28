@@ -11,7 +11,7 @@ export const LinkProvider = ({ children }) => {
 
   const [editingIndex, setEditingIndex] = useState(null);
   const [editModalVisible, setEditModalVisible] = useState(false); //edit modalı için
-
+  
   useEffect(() => {
     const storedLinks = localStorage.getItem('links');
     if (storedLinks) {

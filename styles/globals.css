@@ -15,3 +15,8 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+
+
+/* .flex.flex-row.gap-2.cursor-pointer:hover .pi-arrow-down {
+    background: red;
+} */
