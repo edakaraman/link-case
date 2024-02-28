@@ -1,10 +1,10 @@
 import React from "react";
-import HomePage from "./HomePage";
+import FormModal from '@/components/FormModal'
 
 export default function Index() {
     return (
         <div className="card justify-content-center">
-            <HomePage/>
+             <FormModal />
         </div>
     )
 }
